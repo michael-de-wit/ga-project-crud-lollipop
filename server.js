@@ -18,7 +18,7 @@ app.use(methodOverride(`_method`)) // to make DELETE, PUT requests work
 // app.use(morgan(`dev`)) // for HTML request info in the console
 
 const path = require('path'); // Set up public folder
-app.use(express.static(path.join(__dirname, 'public'))); // Set up public folder
+app.use(express.static('public'));
 
 // Schema
 const conditionStateComparisonData = require(`./models/conditions.js`) // use this MongoDB schema
