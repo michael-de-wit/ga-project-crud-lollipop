@@ -1,19 +1,5 @@
 
 <%- include(`./partials/header`) %>
-    <title>Condition state comparison landing page</title>
-</head>
-<body>
-    <h1>Condition state comparison</h1>
-    <div>
-        <ul>
-            <% for (const [index, dataPoint] of dataPoints.entries()) { %>
-                <li> 
-                    <a href="/<%= dataPoint._id %>">
-                        (<%= dataPoint.xPos %>, <%= dataPoint.yPos %>) 
-                    </a>
-                </li>
-            <% } %>
-        </ul>
-    </div>
-</body>
-</html>
+    <%- include(`./partials/add`) %>
+    <%- include(`./partials/datalist`) %>   
+<%- include(`./partials/footer`) %>
