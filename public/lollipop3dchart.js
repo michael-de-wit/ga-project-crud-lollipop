@@ -87,9 +87,9 @@ scene.selectAll("a-sphere.ending")
     .attr("color", "purple");
 
 scene.selectAll("a-entity.lollipopstick")
-    .data(dataDots)
-    .enter()
-    .append("a-entity")
+.data(dataDots)
+.enter()
+.append("a-entity")
     // .attr("line","start: 0 1 -1; end: 2 2 -2; color: black")
     .attr("line", function(d, i) {
             let x1 = x_scale(d.xPos1)
@@ -99,6 +99,7 @@ scene.selectAll("a-entity.lollipopstick")
             let z2 = z_scale(0);
             let y2 = y_scale(d.condition);
             console.log(`start: ${x1} ${y1} ${z1}; end: ${x2} ${y2} ${z2}; color: black`);
+            zPosOffset = zPosOffset + 5
             return `start: ${x1} ${y1} ${z1}; end: ${x2} ${y2} ${z2}; color: black`
         })
 
