@@ -7,7 +7,7 @@ console.log(data);
 // Set dimensions and margins
 const margin = {top: 10, right: 30, bottom: 30, left: 30};
 const width = 460 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+const height = 300 - margin.top - margin.bottom;
 
 // Append SVG object
 const svg = d3.select("#condition-state-comparison-lollipop-visualization")

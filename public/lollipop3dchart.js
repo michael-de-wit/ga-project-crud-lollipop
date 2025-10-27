@@ -1,0 +1,107 @@
+// Load the data from the script tag
+const dataArrayDotsAsString = document.getElementById('dataArrayDots').innerText;
+const dataDots = JSON.parse(dataArrayDotsAsString);
+console.log(dataDots);
+
+// Select the A-Frame scene
+let scene = d3.select("a-scene")
+    // .append("a-sphere")
+    // .attr("radius", 0.2) // Set a fixed radius for each sphere
+    // .attr("position", "-0.5 1.75 -1")
+    // .attr("color", `black`)
+
+
+// Define scales to map data values to A-Frame coordinates
+// The domain should cover the full range of your data.
+// The range should define the coordinate space in your A-Frame scene.
+const x_scale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([0, 3]);
+
+const y_scale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([1, 5]);
+
+const z_scale = d3.scaleLinear()
+    .domain([0, 100])
+    .range([-1, -4]);
+
+// Create a color scale for conditions
+// const color_scale = d3.scaleOrdinal(d3.schemeCategory10);
+
+// Use D3's data-join to create spheres for each data point
+
+// scene.append("a-entity")
+//     .data(data)
+//     .enter()
+//     .append("a-sphere")
+//     .attr("radius", 0.1) // Set a fixed radius for each sphere
+//     // .attr("position", "0 1 -1")
+//     .attr('position', "1 1 -1")
+//     .attr("color", "green");
+
+scene.append("a-entity")
+    .attr("line","start: 0 1 -1; end: 5 1 -1; color: red")
+
+scene.append("a-entity")
+    .attr("line","start: 0 1 -1; end: 0 6 -1; color: green")
+
+scene.append("a-entity")
+    .attr("line","start: 0 1 -1; end: 0 1 -6; color: blue")
+
+scene.selectAll("a-sphere")
+    .data(dataDots)
+    .enter()
+    .append("a-sphere")
+    .attr("radius", 0.1) // Set a fixed radius for each sphere
+    // .attr("position", "0 1 -1")
+    .attr('position', function(d, i) {
+            var x = x_scale(d.xPos);
+            var z = z_scale(d.yPos);
+            var y = y_scale(d.zPos);
+            console.log(d,i,d.zPos);
+            return x + " " + y + " " + z;
+          })
+    .attr("color", "black");
+
+// Add axis lines for better visualization of the 3D space
+// X-axis
+// scene.append("a-entity").attr("line", "start: -60 0 0; end: 60 0 0; color: #FFF;");
+// // Y-axis
+// scene.append("a-entity").attr("line", "start: 0 -60 0; end: 0 60 0; color: #FFF;");
+// // Z-axis
+// scene.append("a-entity").attr("line", "start: 0 0 -60; end: 0 0 60; color: #FFF;");
+
+// From: https://claude.ai/chat/1ca4def1-b7d7-4ea6-b109-4e75ed1de386
+AFRAME.registerComponent('vertical-controls', {
+            init: function() {
+                this.moveSpeed = 0.1;
+                this.keys = {};
+                
+                // Track key states
+                window.addEventListener('keydown', (e) => {
+                    this.keys[e.key.toLowerCase()] = true;
+                });
+                
+                window.addEventListener('keyup', (e) => {
+                    this.keys[e.key.toLowerCase()] = false;
+                });
+            },
+            
+            tick: function() {
+                let pos = this.el.object3D.position;
+                
+                // Q key to move up
+                if (this.keys['q']) {
+                    pos.y += this.moveSpeed;
+                }
+                
+                // E key to move down
+                if (this.keys['e']) {
+                    pos.y -= this.moveSpeed;
+                }
+            }
+        });
+
+        // Add the component to the camera rig
+        document.querySelector('#rig').setAttribute('vertical-controls', '');
