@@ -1,6 +1,6 @@
 // Load the data from the script tag
-const dataArrayDotsAsString = document.getElementById('dataArrayDots').innerText;
-const dataDots = JSON.parse(dataArrayDotsAsString);
+const dataArrayForLollipop3dAsString = document.getElementById('dataArray').innerText;
+const dataDots = JSON.parse(dataArrayForLollipop3dAsString);
 console.log(dataDots);
 
 // Select the A-Frame scene
@@ -18,13 +18,19 @@ const x_scale = d3.scaleLinear()
     .domain([0, 100])
     .range([0, 3]);
 
-const y_scale = d3.scaleLinear()
-    .domain([0, 100])
-    .range([1, 5]);
+// const y_scale = d3.scaleLinear()
+//     .domain([0, 100])
+//     .range([1, 5]);
+
+const y_scale = d3.scaleBand() // Creates band scale x-axis - i.e. maps categorical range to a continuous range
+            .range([1, 5]) // On-screen width
+            .domain(data.map(function (d) { return d.condition; })) // Data-perspective width; as wide as the number of x-axis categories
 
 const z_scale = d3.scaleLinear()
     .domain([0, 100])
     .range([-1, -4]);
+
+
 
 // Create a color scale for conditions
 // const color_scale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -56,13 +62,14 @@ scene.selectAll("a-sphere")
     .attr("radius", 0.1) // Set a fixed radius for each sphere
     // .attr("position", "0 1 -1")
     .attr('position', function(d, i) {
-            var x = x_scale(d.xPos);
-            var z = z_scale(d.yPos);
-            var y = y_scale(d.zPos);
-            console.log(d,i,d.zPos);
+            let x = x_scale(d.xPos1);
+            let z = z_scale(0);
+            let y = y_scale(d.condition);
+            console.log(d,d.condition,y_scale(d.condition),y);
             return x + " " + y + " " + z;
           })
     .attr("color", "black");
+
 
 // Add axis lines for better visualization of the 3D space
 // X-axis
