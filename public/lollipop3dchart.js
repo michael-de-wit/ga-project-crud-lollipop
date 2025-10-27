@@ -55,7 +55,7 @@ scene.append("a-entity")
 scene.append("a-entity")
     .attr("line","start: 0 1 -1; end: 0 1 -6; color: blue")
 
-scene.selectAll("a-sphere")
+scene.selectAll("a-sphere.starting")
     .data(dataDots)
     .enter()
     .append("a-sphere")
@@ -68,8 +68,39 @@ scene.selectAll("a-sphere")
             console.log(d,d.condition,y_scale(d.condition),y);
             return x + " " + y + " " + z;
           })
-    .attr("color", "black");
+    .attr("color", "green");
 
+scene.selectAll("a-sphere.ending")
+    .data(dataDots)
+    .enter()
+    .append("a-sphere")
+    .attr("radius", 0.1) // Set a fixed radius for each sphere
+    // .attr("position", "0 1 -1")
+    .attr('position', function(d, i) {
+            let x = x_scale(d.xPos2);
+            let y = y_scale(d.condition);
+            let z = z_scale(0);
+            console.log(d,d.condition,y_scale(d.condition),y);
+            return `${x} ${y} ${z}`;
+            // return x + " " + y + " " + z;
+          })
+    .attr("color", "purple");
+
+scene.selectAll("a-entity.lollipopstick")
+    .data(dataDots)
+    .enter()
+    .append("a-entity")
+    // .attr("line","start: 0 1 -1; end: 2 2 -2; color: black")
+    .attr("line", function(d, i) {
+            let x1 = x_scale(d.xPos1)
+            let z1 = z_scale(0);
+            let y1 = y_scale(d.condition);
+            let x2 = x_scale(d.xPos2)
+            let z2 = z_scale(0);
+            let y2 = y_scale(d.condition);
+            console.log(`start: ${x1} ${y1} ${z1}; end: ${x2} ${y2} ${z2}; color: black`);
+            return `start: ${x1} ${y1} ${z1}; end: ${x2} ${y2} ${z2}; color: black`
+        })
 
 // Add axis lines for better visualization of the 3D space
 // X-axis
@@ -79,7 +110,7 @@ scene.selectAll("a-sphere")
 // // Z-axis
 // scene.append("a-entity").attr("line", "start: 0 0 -60; end: 0 0 60; color: #FFF;");
 
-// From: https://claude.ai/chat/1ca4def1-b7d7-4ea6-b109-4e75ed1de386
+// Navigation additions from: https://claude.ai/chat/1ca4def1-b7d7-4ea6-b109-4e75ed1de386
 AFRAME.registerComponent('vertical-controls', {
             init: function() {
                 this.moveSpeed = 0.1;
